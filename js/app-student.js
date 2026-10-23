@@ -31,6 +31,14 @@ function autoClassify(job) {
 
 // 加载数据
 async function loadData() {
+  // 单文件版：数据已内联在 window.__JOBS__
+  if (Array.isArray(window.__JOBS__) && window.__JOBS__.length) {
+    jobs = window.__JOBS__;
+    jobs.forEach(j => { j.channels = j.channels || autoClassify(j); });
+    applyFilters();
+    updateStats();
+    return;
+  }
   const urls = [DATA_URL + '?t=' + Date.now(), DATA_URL_FALLBACK + '?t=' + Date.now()];
   for (const url of urls) {
     try {
