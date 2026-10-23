@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STZU-SDI 就业信息平台 - 管理版</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20261025" />
+</head>
+<body>
+
+<!-- ===== 背景装饰 ===== -->
+<div class="bg-decor">
+  <div class="bg-grid"></div>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+</div>
+
+<!-- ===== 顶部 ===== -->
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 40 40" width="36" height="36">
+        <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 3"/>
+        <path d="M10 24 L20 12 L30 24 L25 24 L25 28 L15 28 L15 24 Z" fill="currentColor"/>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <div class="brand-title">STZU · SDI</div>
+      <div class="brand-sub">创意设计学院 · 就业信息平台 <span class="admin-badge">管理版</span></div>
+    </div>
+  </div>
+  <nav class="tabs">
+    <button class="tab active" data-tab="browse">
+      <span class="tab-ico">📋</span><span>职位浏览</span>
+    </button>
+    <button class="tab" data-tab="classify">
+      <span class="tab-ico">✨</span><span>一键整理</span>
+    </button>
+    <button class="tab" data-tab="stats">
+      <span class="tab-ico">📊</span><span>数据面板</span>
+    </button>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="shareBtn" title="分享 / 导出">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 12v7a2 2 0 002 2h12a2 2 0 002-2v-7"/>
+        <polyline points="16 6 12 2 8 6"/>
+        <line x1="12" y1="2" x2="12" y2="15"/>
+      </svg>
+    </button>
+    <button class="icon-btn" id="aiBtn" title="AI 设置 (可选)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/><path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- ===== 主视图：浏览 ===== -->
+<section class="view active" id="tab-browse">
+  <!-- Hero + 搜索 -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-tag">27 届秋招 · 实时更新 · 管理版</div>
+      <h1 class="hero-title">
+        找到你的<br>
+        <span class="hero-accent">下一份</span> 好工作
+      </h1>
+      <div class="search-box">
+        <div class="search-input">
+          <svg class="search-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="search" placeholder="搜索公司、岗位、地点、专业、关键词…" autofocus />
+          <button class="search-clear" id="searchClear" hidden>✕</button>
+        </div>
+        <div class="chips">
+          <button class="chip active" data-channel="">全部 (<span id="chipTotal">961</span>)</button>
+          <button class="chip" data-channel="industrial">🏭 工业设计</button>
+          <button class="chip" data-channel="artstech">🎨 艺术与科技</button>
+          <button class="chip" data-channel="newmedia">📱 新媒体艺术</button>
+          <button class="chip" data-channel="fashion">👗 服装设计</button>
+          <button class="chip" data-channel="env">🏠 环境设计</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 工具栏 -->
+  <div class="toolbar">
+    <div class="filters">
+      <div class="filter-item">
+        <span class="filter-label">📍 分类</span>
+        <select id="filterCategory"><option value="">全部</option></select>
+      </div>
+      <div class="filter-item">
+        <span class="filter-label">📍 地点</span>
+        <select id="filterLocation"><option value="">全部</option></select>
+      </div>
+      <div class="filter-item">
+        <span class="filter-label">🗂️ 来源</span>
+        <select id="filterSource"><option value="">全部</option></select>
+      </div>
+    </div>
+    <div class="toolbar-right">
+      <span class="result-meta"><span id="resultCount">0</span> / <span id="totalCount">961</span> 条</span>
+      <div class="sort-group">
+        <button class="sort-btn active" data-sort="relevance">相关度</button>
+        <button class="sort-btn" data-sort="date">最新</button>
+        <button class="sort-btn" data-sort="company">公司</button>
+      </div>
+      <button class="btn-add" id="manualAddBtn">+ 新增</button>
+    </div>
+  </div>
+
+  <!-- 列表 -->
+  <div class="list-wrap" id="listWrap">
+    <!-- 由 JS 渲染 -->
+  </div>
+
+  <!-- 空状态 -->
+  <div class="empty" id="emptyState" hidden>
+    <div class="empty-ico">🔍</div>
+    <h3>没有找到匹配结果</h3>
+    <p>换个关键词试试，或<a href="#" id="clearAllFilters">清除全部筛选</a></p>
+  </div>
+</section>
+
+<!-- ===== 一键整理视图 ===== -->
+<section class="view" id="tab-classify">
+  <div class="classify-layout">
+    <div class="classify-left">
+      <div class="section-head">
+        <h2>✨ 一键分类整理</h2>
+        <p>把招聘网页、文件、文字、图片扔进来，AI 自动识别信息并归档</p>
+      </div>
+
+      <!-- 拖拽区 -->
+      <div class="dropzone" id="dropzone">
+        <div class="dz-inner">
+          <div class="dz-anim">
+            <div class="dz-ring"></div>
+            <div class="dz-icon">📥</div>
+          </div>
+          <h3>拖拽文件到这里</h3>
+          <p class="dz-sub">PDF / Word / Excel / 图片 / 音频，或粘贴链接</p>
+          <input type="file" id="dzFileInput" multiple hidden />
+          <button class="dz-btn" id="dzPickBtn">选择文件</button>
+        </div>
+      </div>
+
+      <!-- 文字/链接粘贴 -->
+      <div class="paste-block">
+        <div class="paste-head">
+          <span class="paste-title">📝 或直接粘贴</span>
+          <button class="paste-clear" id="pasteClear">清空</button>
+        </div>
+        <textarea id="pasteArea" placeholder="粘贴网址、招聘启事、公司简介、求职文字...
+
+例：
+https://jobs.bytedance.com/xxx
+字节跳动招聘：视觉设计师，本科及以上，薪资 25-45K，地点北京/深圳..."></textarea>
+        <button class="btn-primary btn-big" id="classifyBtn">🤖 AI 智能识别并整理</button>
+      </div>
+    </div>
+
+    <div class="classify-right">
+      <div class="section-head">
+        <h2>📋 整理结果</h2>
+        <p>识别成功后确认入库</p>
+      </div>
+      <div class="result-panel" id="resultPanel">
+        <div class="result-empty">
+          <div class="result-empty-ico">🕳️</div>
+          <p>还没有整理结果</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 统计视图 ===== -->
+<section class="view" id="tab-stats">
+  <div class="stats-grid">
+    <div class="stat-tile accent-amber">
+      <div class="stat-num" id="statTotal">—</div>
+      <div class="stat-desc">总招聘条目</div>
+    </div>
+    <div class="stat-tile accent-blue">
+      <div class="stat-num" id="statCompanies">—</div>
+      <div class="stat-desc">覆盖公司</div>
+    </div>
+    <div class="stat-tile accent-green">
+      <div class="stat-num" id="statLocations">—</div>
+      <div class="stat-desc">工作城市</div>
+    </div>
+    <div class="stat-tile accent-pink">
+      <div class="stat-num" id="statSources">—</div>
+      <div class="stat-desc">信息来源</div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>📍 热门城市 Top 12</h3>
+      <div class="chart-bar-vertical" id="chartLocations"></div>
+    </div>
+    <div class="chart-card">
+      <h3>🏷️ 岗位分布</h3>
+      <div class="chart-pie" id="chartCategories"></div>
+    </div>
+    <div class="chart-card chart-full">
+      <h3>📈 数据来源占比</h3>
+      <div class="chart-source-bar" id="chartSources"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 详情弹窗 ===== -->
+<div class="drawer" id="detailDrawer">
+  <div class="drawer-backdrop" data-close></div>
+  <div class="drawer-panel">
+    <button class="drawer-close" data-close>✕</button>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<!-- ===== 新增弹窗 ===== -->
+<div class="modal" id="addModal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-panel">
+    <h3>➕ 添加招聘信息</h3>
+    <form id="addForm">
+      <div class="form-grid">
+        <label><span>公司名称 *</span><input name="company" required /></label>
+        <label><span>岗位 *</span><input name="position" required /></label>
+        <label><span>工作地点</span><input name="location" placeholder="深圳 / 杭州 / 远程" /></label>
+        <label><span>薪资范围</span><input name="salary" placeholder="如 15-25K" /></label>
+        <label><span>分类</span><input name="category" placeholder="设计 / 前端 / 产品" /></label>
+        <label><span>发布日期</span><input type="date" name="date" /></label>
+        <label class="span-2"><span>投递链接</span><input name="link" placeholder="https://... 或邮箱" /></label>
+        <label class="span-2"><span>详情</span><textarea name="details" rows="4" placeholder="招聘要求、截止时间、备注..."></textarea></label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" id="addCancel">取消</button>
+        <button type="submit" class="btn-primary">保存入库</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== 分享弹窗 ===== -->
+<div class="modal" id="shareModal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-panel">
+    <h3>🔗 分享 & 导出</h3>
+    <p class="modal-desc">复制链接分享当前筛选视图，或导出完整数据</p>
+    <div class="share-block">
+      <label>共享链接</label>
+      <div class="share-row">
+        <input type="text" id="shareLink" readonly />
+        <button class="btn-primary" id="copyLink">复制</button>
+      </div>
+    </div>
+    <div class="share-block">
+      <label>导出文件</label>
+      <div class="export-grid">
+        <button class="btn-export" id="exportCsv">
+          <div class="exp-ico">📊</div>
+          <div class="exp-title">CSV 表格</div>
+          <div class="exp-sub">Excel 可打开</div>
+        </button>
+        <button class="btn-export" id="exportJson">
+          <div class="exp-ico">💾</div>
+          <div class="exp-title">JSON 备份</div>
+          <div class="exp-sub">完整数据</div>
+        </button>
+        <button class="btn-export" id="exportFiltered">
+          <div class="exp-ico">🎯</div>
+          <div class="exp-title">当前筛选</div>
+          <div class="exp-sub">仅筛选结果</div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="js/app-admin.js?v=20261025"></script>
+</body>
+</html>
